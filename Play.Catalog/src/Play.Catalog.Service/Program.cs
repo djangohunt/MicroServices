@@ -2,7 +2,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+// SuppressAsyncSuffixInActionNames prevents the async suffic from CreatedAtAction(nameof(GetByIdAsync), new {id = item.Id}, item);
+builder.Services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
