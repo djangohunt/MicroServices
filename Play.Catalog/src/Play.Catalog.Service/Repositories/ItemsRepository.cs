@@ -41,4 +41,21 @@ public class ItemsRepository
 
 		await itemDbCollection.InsertOneAsync(item);
 	}
+
+	public async Task UpdateAsync(Item item)
+	{
+		if (item is null)
+		{
+			throw new ArgumentNullException(nameof(item));
+		}
+
+		FilterDefinition<Item>? itemByIdFilter = filterBuilder.Eq(existingItem => existingItem.Id, item.Id);
+		await itemDbCollection.ReplaceOneAsync(itemByIdFilter, item);
+	}
+
+	public async Task RemoveAsync(Guid id)
+	{
+		FilterDefinition<Item>? itemByIdFilter = filterBuilder.Eq(existingItem => existingItem.Id, id);
+		await itemDbCollection.DeleteOneAsync(itemByIdFilter);
+	}
 }
