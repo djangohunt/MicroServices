@@ -1,6 +1,14 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// Stores the GUIDs and DateTimeOffsets as a strings so it's easier to read in the DB.
+BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
+BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
 
 // SuppressAsyncSuffixInActionNames prevents the async suffic from CreatedAtAction(nameof(GetByIdAsync), new {id = item.Id}, item);
 builder.Services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false);
