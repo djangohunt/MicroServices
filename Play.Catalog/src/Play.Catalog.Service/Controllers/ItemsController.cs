@@ -15,14 +15,19 @@ public class ItemsController : ControllerBase
 {
 	// ********************  All the API methods for Items  **********************
 
-	private readonly ItemsRepository itemsRepository = new();
+	private readonly IItemsRepository _itemsRepository;
+
+	public ItemsController(IItemsRepository itemsRepository)
+	{
+		_itemsRepository = itemsRepository;
+	}
 
 	// API method:
 	// Mark the method with the type of HTTP verb that it'll be called by.
 	[HttpGet]
 	public async Task<IEnumerable<ItemDto>> GetAsync()
 	{
-		IEnumerable<ItemDto> items = (await itemsRepository.GetAllAsync())
+		IEnumerable<ItemDto> items = (await _itemsRepository.GetAllAsync())
 			.Select(item => item.AsDto());
 		
 		return items;
@@ -34,7 +39,7 @@ public class ItemsController : ControllerBase
 	[HttpGet("{id}")]
 	public async Task<ActionResult<ItemDto>> GetByIdAsync(Guid id)
 	{
-		Item? item = await itemsRepository.GetAsync(id);
+		Item? item = await _itemsRepository.GetAsync(id);
 
 		if (item is null)
 		{
@@ -53,7 +58,7 @@ public class ItemsController : ControllerBase
 		//Items.Add(item);
 
 		Item item = itemDto.AsItem();
-		await itemsRepository.CreateAsync(item);
+		await _itemsRepository.CreateAsync(item);
 
 		// Tells the caller the item has been created and you can find it at the following route.
 		// This is a standard example, giving the get by id method, the anonymous object with the ID and the new object itself.
@@ -66,7 +71,7 @@ public class ItemsController : ControllerBase
 	// Specify the contract required to update the item (UpdateItemDto)
 	public async Task<IActionResult> PutAsync(Guid id, UpdateItemDto updateItemDto)
 	{
-		Item? existingItem = await itemsRepository.GetAsync(id);
+		Item? existingItem = await _itemsRepository.GetAsync(id);
 
 		if (existingItem is null) { return NotFound(); }
 
@@ -74,7 +79,7 @@ public class ItemsController : ControllerBase
 		existingItem.Description = updateItemDto.Description;
 		existingItem.Price = updateItemDto.Price;
 
-		await itemsRepository.UpdateAsync(existingItem);
+		await _itemsRepository.UpdateAsync(existingItem);
 
 		// Nothing to return.
 		return NoContent();
@@ -84,11 +89,11 @@ public class ItemsController : ControllerBase
 	[HttpDelete("{id}")]
 	public async Task<IActionResult> DeleteAsync(Guid id)
 	{
-		Item? existingItem = await itemsRepository.GetAsync(id);
+		Item? existingItem = await _itemsRepository.GetAsync(id);
 
 		if (existingItem is null) { return NotFound(); }
 
-		await itemsRepository.RemoveAsync(id);
+		await _itemsRepository.RemoveAsync(id);
 
 		return NoContent();
 	}
