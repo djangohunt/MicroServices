@@ -1,7 +1,7 @@
-﻿using MongoDB.Driver;
-using Play.Catalog.Service.Entities;
+﻿using System.Linq.Expressions;
+using MongoDB.Driver;
 
-namespace Play.Catalog.Service.Repositories;
+namespace Play.Common.MongoDb;
 
 public class MongoRepository<T> : IRepository<T> where T : IIdentifiable
 {
@@ -24,11 +24,21 @@ public class MongoRepository<T> : IRepository<T> where T : IIdentifiable
 		return await _dbCollection.Find(filterBuilder.Empty).ToListAsync();
 	}
 
+	public async Task<IReadOnlyCollection<T>> GetAllAsync(Expression<Func<T, bool>> filter)
+	{
+		return await _dbCollection.Find(filter).ToListAsync();
+	}
+
 	public async Task<T> GetAsync(Guid id)
 	{
 		// Creates an equality filter to be used in the collection Find method.
 		FilterDefinition<T>? entityByIdFilter = filterBuilder.Eq(entity => entity.Id, id);
 		return await _dbCollection.Find(entityByIdFilter).FirstOrDefaultAsync();
+	}
+
+	public async Task<T> GetAsync(Expression<Func<T, bool>> filter)
+	{
+		return await _dbCollection.Find(filter).FirstOrDefaultAsync();
 	}
 
 	public async Task CreateAsync(T entity)

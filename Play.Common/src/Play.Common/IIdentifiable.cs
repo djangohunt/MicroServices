@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------------
-// Project: WeatherMonitor
-// File:Ping.cs
+// Project: Play.Catalog.Service
+// File:IIdentifiable.cs
 // -----------------------------------------------------------------------------
 // Copyright:
 // This is an unpublished work the copyright in which vests in TEKEVER Ltd.
@@ -14,6 +14,9 @@
 // use extend to all media in which the information may be embodied.
 // -----------------------------------------------------------------------------
 
-namespace WeatherMonitor;
+namespace Play.Common;
 
-public record Ping(string Button);
+public interface IIdentifiable
+{
+	Guid Id { get; set; }
+}
