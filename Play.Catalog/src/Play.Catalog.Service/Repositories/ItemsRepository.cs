@@ -3,7 +3,7 @@ using Play.Catalog.Service.Entities;
 
 namespace Play.Catalog.Service.Repositories;
 
-public class ItemsRepository
+public class ItemsRepository : IItemsRepository
 {
 	// Group of objects in a DB - like a table in SQL.
 	private const string itemCollectionName = "items";
@@ -12,11 +12,9 @@ public class ItemsRepository
 	// Filter for querying items in MongoDb
 	private readonly FilterDefinitionBuilder<Item> filterBuilder = Builders<Item>.Filter;
 
-	public ItemsRepository()
+	public ItemsRepository(IMongoDatabase db)
 	{
-		var mongoClient = new MongoClient("mongodb://localhost:27017");
-		IMongoDatabase? database = mongoClient.GetDatabase("Catalog");
-		itemDbCollection = database.GetCollection<Item>(itemCollectionName);
+		itemDbCollection = db.GetCollection<Item>(itemCollectionName);
 	}
 
 	// Good API pattern is to return IReadOnlyCollection as we wouldn't expect the caller to edit this.
