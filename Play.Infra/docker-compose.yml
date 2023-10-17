@@ -1,0 +1,17 @@
+# docker run -d --rm --name mongo -p 27017:27017 -v mongodbdata:/data/db mongo
+
+version: "24.0.6"
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - 27017:27017
+    volumes:
+    # This means Docker will write the database entries into the volume defined on the machine (outside the container)
+      - mongodbdata:/data/db
+
+# Define volume outside the container
+volumes:
+  mongodbdata:
