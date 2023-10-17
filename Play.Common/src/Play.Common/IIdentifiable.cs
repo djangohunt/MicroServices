@@ -14,7 +14,7 @@
 // use extend to all media in which the information may be embodied.
 // -----------------------------------------------------------------------------
 
-namespace Play.Catalog.Service.Entities;
+namespace Play.Common;
 
 public interface IIdentifiable
 {

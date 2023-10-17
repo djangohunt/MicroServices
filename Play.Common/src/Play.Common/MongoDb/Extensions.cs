@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Play.Catalog.Service.Entities;
-using Play.Catalog.Service.Settings;
+using Play.Common.Settings;
 
 namespace Play.Common.MongoDb;
 
