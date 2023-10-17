@@ -85,6 +85,23 @@ public class ItemsController : ControllerBase
 		return NoContent();
 	}
 
+	[HttpPut("price/{id}")]
+	public async Task<IActionResult> PutPriceAsync(Guid id, UpdateItemPriceDto updateItemPriceDto)
+	{
+		Item? existingItem = await _itemsRepository.GetAsync(id);
+
+		if (existingItem is null)
+		{
+			return NotFound();
+		}
+		
+		existingItem.Price = updateItemPriceDto.Price;
+
+		await _itemsRepository.UpdateAsync(existingItem);
+
+		return NoContent();
+	}
+
 	// DELETE /items/{id}
 	[HttpDelete("{id}")]
 	public async Task<IActionResult> DeleteAsync(Guid id)
