@@ -8,3 +8,4 @@ public record ItemDto(Guid Id, string Name, string Description, decimal Price, D
 public record CreateItemDto([Required] string Name, string Description, [Range(0, 1000)] decimal Price);
 // Required enforces that the field is entered.
 public record UpdateItemDto([Required] string Name, string Description, [Range(0, 1000)] decimal Price);
+public record UpdateItemPriceDto([Range(0, 5000)] decimal Price);
